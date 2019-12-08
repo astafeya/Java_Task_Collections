@@ -13,7 +13,7 @@ public class MainClass {
             myLinkedList.add(newElement);
             javaLinkedList.add(newElement);
         }
-        double startTime = 0, myInsertTime = 0, javaInsertTime = 0, myRemoveTime = 0, javaRemoveTime = 0,
+        double startTime, myInsertTime = 0, javaInsertTime = 0, myRemoveTime = 0, javaRemoveTime = 0,
                 myAddTime = 0, javaAddTime = 0;
 
         for (int i = 0; i < times; i++) {
@@ -53,5 +53,10 @@ public class MainClass {
         System.out.println("Add\nJava: " + javaAddTime + "\nMy: " + myAddTime);
         System.out.println("Insert\nJava: " + javaInsertTime + "\nMy: " + myInsertTime);
         System.out.println("Remove\nJava: " + javaRemoveTime + "\nMy: " + myRemoveTime);
+
+        TestTime testTime = new TestTime(size, times);
+        System.out.println(testTime.testList());
+        System.out.println(testTime.testSet());
+        System.out.println(testTime.testMap());
     }
 }
