@@ -1,12 +1,65 @@
+import mylinkedlist.MyLinkedList;
 import java.util.*;
 
 public class TestTime {
-    int size = 10000;
-    int times = 10;
+    int size;
+    int times;
 
     public TestTime(int size, int times) {
         this.size = size;
         this.times = times;
+    }
+
+    public String testMyList() {
+        MyLinkedList<Integer> myLinkedList = new MyLinkedList<>();
+        LinkedList<Integer> javaLinkedList = new LinkedList<>();
+        for (int i = 0; i < size; i++) {
+            Integer newElement = (int) Math.round((Math.random() * 100));
+            myLinkedList.add(newElement);
+            javaLinkedList.add(newElement);
+        }
+        double startTime, myInsertTime = 0, javaInsertTime = 0, myRemoveTime = 0, javaRemoveTime = 0,
+                myAddTime = 0, javaAddTime = 0;
+        for (int i = 0; i < times; i++) {
+            //-----Add-----
+            Integer newElement = (int) Math.round((Math.random() * 100));
+            startTime = System.nanoTime();
+            javaLinkedList.add(newElement);
+            javaAddTime = javaAddTime + System.nanoTime() - startTime;
+
+            startTime = System.nanoTime();
+            myLinkedList.add(newElement);
+            myAddTime = myAddTime + System.nanoTime() - startTime;
+
+            //-----Insert-----
+            newElement = (int) Math.round((Math.random() * 100));
+            startTime = System.nanoTime();
+            javaLinkedList.add(size / 2, newElement);
+            javaInsertTime = javaInsertTime + System.nanoTime() - startTime;
+
+            startTime = System.nanoTime();
+            myLinkedList.add(size / 2, newElement);
+            myInsertTime = myInsertTime + System.nanoTime() - startTime;
+
+            //-----Remove-----
+            startTime = System.nanoTime();
+            javaLinkedList.remove(size / 2);
+            javaRemoveTime = javaRemoveTime + System.nanoTime() - startTime;
+
+            startTime = System.nanoTime();
+            myLinkedList.remove(size / 2);
+            myRemoveTime = myRemoveTime + System.nanoTime() - startTime;
+
+        }
+        myInsertTime /= times;
+        javaInsertTime /= times;
+        myRemoveTime /= times;
+        javaRemoveTime /= times;
+        myAddTime /= times;
+        javaAddTime /= times;
+
+        return "\nJavaLinkedList:\nAdd: " + javaAddTime + "\nInsert: " + javaInsertTime + "\nRemove: " + javaRemoveTime
+                + "\n\nMyLinkedList:\nAdd: " + myAddTime + "\nInsert: " + myInsertTime + "\nRemove: " + myRemoveTime;
     }
 
     public String testList() {
@@ -25,6 +78,7 @@ public class TestTime {
             startTime = System.nanoTime();
             linkedList.add(newElement);
             lAddTime = lAddTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             arrayList.add(newElement);
             aAddTime = aAddTime + System.nanoTime() - startTime;
@@ -34,6 +88,7 @@ public class TestTime {
             startTime = System.nanoTime();
             linkedList.add(size / 2, newElement);
             lInsertTime = lInsertTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             arrayList.add(size / 2, newElement);
             aInsertTime = aInsertTime + System.nanoTime() - startTime;
@@ -42,6 +97,7 @@ public class TestTime {
             startTime = System.nanoTime();
             linkedList.remove(size / 2);
             lRemoveTime = lRemoveTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             arrayList.remove(size / 2);
             aRemoveTime = aRemoveTime + System.nanoTime() - startTime;
@@ -75,9 +131,11 @@ public class TestTime {
             startTime = System.nanoTime();
             hashSet.add(newElement);
             hAddTime = hAddTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             linkedHashSet.add(newElement);
             lAddTime = lAddTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             treeSet.add(newElement);
             tAddTime = tAddTime + System.nanoTime() - startTime;
@@ -86,9 +144,11 @@ public class TestTime {
             startTime = System.nanoTime();
             hashSet.remove(toRemove);
             hRemoveTime = hRemoveTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             linkedHashSet.remove(toRemove);
             lRemoveTime = lRemoveTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             treeSet.remove(toRemove);
             tRemoveTime = tRemoveTime + System.nanoTime() - startTime;
@@ -123,22 +183,26 @@ public class TestTime {
             startTime = System.nanoTime();
             hashMap.put(size + i, newElement);
             hAddTime = hAddTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             linkedHashMap.put(size + i, newElement);
             lAddTime = lAddTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
             treeMap.put(size + i, newElement);
             tAddTime = tAddTime + System.nanoTime() - startTime;
 
             //-----Remove-----
             startTime = System.nanoTime();
-            hashMap.remove(size/2);
+            hashMap.remove(size/2 + i);
             hRemoveTime = hRemoveTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
-            linkedHashMap.remove(size/2);
+            linkedHashMap.remove(size/2 + i);
             lRemoveTime = lRemoveTime + System.nanoTime() - startTime;
+
             startTime = System.nanoTime();
-            treeMap.remove(size/2);
+            treeMap.remove(size/2 + i);
             tRemoveTime = tRemoveTime + System.nanoTime() - startTime;
         }
         hAddTime /= times;
