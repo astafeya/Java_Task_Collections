@@ -57,20 +57,6 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         size = 0;
     }
 
-    public MyLinkedList(E[] elements) {
-        if (elements.length != 0) {
-            firstNode = new Node<E>(elements[0]);
-            lastNode = firstNode;
-            size++;
-            for (int i = 1; i < elements.length; i++) {
-                Node<E> newNode = new Node<E>(elements[i], lastNode);
-                lastNode.nextNode = newNode;
-                lastNode = newNode;
-                size++;
-            }
-        }
-    }
-
     @Override
     public void add(E element) {
         Node<E> newNode = new Node<E>(element);
@@ -90,25 +76,19 @@ public class MyLinkedList<E> implements ILinkedList<E> {
         if (index == size) {
             add(element);
         } else {
+            throwIfWrongIndex(index);
             Node<E> newNode = new Node<E>(element);
             if (index == 0) {
                 newNode.nextNode = firstNode;
                 firstNode = newNode;
             } else {
-                if (index < size) {
-                    int n = 0;
-                    Node<E> currentNode = firstNode;
-                    while (n < index - 1) {
-                        n++;
-                        currentNode = currentNode.nextNode;
-                    }
-                    newNode.nextNode = currentNode.nextNode;
-                    newNode.prevNode = currentNode;
-                    currentNode.nextNode = newNode;
-                    Node<E> next = newNode.nextNode;
-                    next.prevNode = newNode;
-                    size++;
-                }
+                Node<E> currentNode = returnNode(index);
+                newNode.prevNode = currentNode.prevNode;
+                newNode.nextNode = currentNode;
+                currentNode.prevNode = newNode;
+                Node<E> prev = newNode.prevNode;
+                prev.nextNode = newNode;
+                size++;
             }
         }
     }
@@ -131,12 +111,7 @@ public class MyLinkedList<E> implements ILinkedList<E> {
 
     @Override
     public E get(int index) {
-        if (index >= size || index < 0) new IndexOutOfBoundsException();
-        Node<E> current = firstNode;
-        int i = 0;
-        while (i++ < index) {
-            current = current.nextNode;
-        }
+        Node<E> current = returnNode(index);
         E result = current.element;
         return result;
     }
@@ -149,19 +124,14 @@ public class MyLinkedList<E> implements ILinkedList<E> {
             current = current.nextNode;
         }
         if (current.element.equals(element)) {
-            return i;
+            return i-1;
         }
         return -1;
     }
 
     @Override
     public E remove(int index) {
-        if (index >= size || index < 0) new IndexOutOfBoundsException();
-        Node<E> current = firstNode;
-        int i = 0;
-        while (i++ < index) {
-            current = current.nextNode;
-        }
+        Node<E> current = returnNode(index);
         E result = current.element;
         Node<E> prev = current.prevNode;
         Node<E> next = current.nextNode;
@@ -183,12 +153,7 @@ public class MyLinkedList<E> implements ILinkedList<E> {
 
     @Override
     public E set(int index, E element) {
-        if (index >= size || index < 0) new IndexOutOfBoundsException();
-        Node<E> current = firstNode;
-        int i = 0;
-        while (i++ < index) {
-            current = current.nextNode;
-        }
+        Node<E> current = returnNode(index);
         E result = current.element;
         current.element = element;
         return result;
@@ -228,5 +193,29 @@ public class MyLinkedList<E> implements ILinkedList<E> {
     @Override
     public Iterator<E> iterator() {
         return new MyIterator();
+    }
+
+    private Node<E> returnNode(int index) {
+        throwIfWrongIndex(index);
+        if (index <= size/2) {
+            Node<E> current = firstNode;
+            int i = 0;
+            while (i++ < index) {
+                current = current.nextNode;
+            }
+            return current;
+
+        } else {
+            Node<E> current = lastNode;
+            int i = size-1;
+            while (i-- > index) {
+                current = current.prevNode;
+            }
+            return current;
+        }
+    }
+
+    private void throwIfWrongIndex(int index) {
+        if (index >= size || index < 0) new IndexOutOfBoundsException();
     }
 }
