@@ -117,7 +117,7 @@ public class TestTime {
         }
 
         return "\nLinkedList:\nAdd: " + arithmeticMean(lAddTime) + "\nInsert: " + arithmeticMean(lInsertTime) + "\nRemove: " + arithmeticMean(lRemoveTime) +
-                "\n\nArrayList:\nAdd: "+ arithmeticMean(aAddTime) + "\nInsert: " + arithmeticMean(aInsertTime) + "\nRemove: " + arithmeticMean(lRemoveTime);
+                "\n\nArrayList:\nAdd: "+ arithmeticMean(aAddTime) + "\nInsert: " + arithmeticMean(aInsertTime) + "\nRemove: " + arithmeticMean(aRemoveTime);
     }
 
     public String testSet() {
