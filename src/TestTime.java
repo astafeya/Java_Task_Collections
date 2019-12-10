@@ -10,6 +10,15 @@ public class TestTime {
         this.times = times;
     }
 
+    private long arithmeticMean(long[] array) {
+        long result = 0;
+        for (int i = 0; i < times; i++) {
+            result += array[i];
+        }
+        result /= times;
+        return result;
+    }
+
     public String testMyList() {
         MyLinkedList<Integer> myLinkedList = new MyLinkedList<>();
         LinkedList<Integer> javaLinkedList = new LinkedList<>();
@@ -18,48 +27,47 @@ public class TestTime {
             myLinkedList.add(newElement);
             javaLinkedList.add(newElement);
         }
-        double startTime, myInsertTime = 0, javaInsertTime = 0, myRemoveTime = 0, javaRemoveTime = 0,
-                myAddTime = 0, javaAddTime = 0;
+        long startTime;
+        long[] myInsertTime = new long[times];
+        long[] javaInsertTime = new long[times];
+        long[] myRemoveTime = new long[times];
+        long[] javaRemoveTime = new long[times];
+        long[] myAddTime = new long[times];
+        long[] javaAddTime = new long[times];
         for (int i = 0; i < times; i++) {
             //-----Add-----
             Integer newElement = (int) Math.round((Math.random() * 100));
             startTime = System.nanoTime();
             javaLinkedList.add(newElement);
-            javaAddTime = javaAddTime + System.nanoTime() - startTime;
+            javaAddTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             myLinkedList.add(newElement);
-            myAddTime = myAddTime + System.nanoTime() - startTime;
+            myAddTime[i] = System.nanoTime() - startTime;
 
             //-----Insert-----
             newElement = (int) Math.round((Math.random() * 100));
             startTime = System.nanoTime();
             javaLinkedList.add(size / 2, newElement);
-            javaInsertTime = javaInsertTime + System.nanoTime() - startTime;
+            javaInsertTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             myLinkedList.add(size / 2, newElement);
-            myInsertTime = myInsertTime + System.nanoTime() - startTime;
+            myInsertTime[i] = System.nanoTime() - startTime;
 
             //-----Remove-----
             startTime = System.nanoTime();
             javaLinkedList.remove(size / 2);
-            javaRemoveTime = javaRemoveTime + System.nanoTime() - startTime;
+            javaRemoveTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             myLinkedList.remove(size / 2);
-            myRemoveTime = myRemoveTime + System.nanoTime() - startTime;
+            myRemoveTime[i] = System.nanoTime() - startTime;
 
         }
-        myInsertTime /= times;
-        javaInsertTime /= times;
-        myRemoveTime /= times;
-        javaRemoveTime /= times;
-        myAddTime /= times;
-        javaAddTime /= times;
 
-        return "\nJavaLinkedList:\nAdd: " + javaAddTime + "\nInsert: " + javaInsertTime + "\nRemove: " + javaRemoveTime
-                + "\n\nMyLinkedList:\nAdd: " + myAddTime + "\nInsert: " + myInsertTime + "\nRemove: " + myRemoveTime;
+        return "\nJavaLinkedList:\nAdd: " + arithmeticMean(javaAddTime) + "\nInsert: " + arithmeticMean(javaInsertTime) + "\nRemove: " + arithmeticMean(javaRemoveTime)
+                + "\n\nMyLinkedList:\nAdd: " + arithmeticMean(myAddTime) + "\nInsert: " + arithmeticMean(myInsertTime) + "\nRemove: " + arithmeticMean(myRemoveTime);
     }
 
     public String testList() {
@@ -70,46 +78,46 @@ public class TestTime {
             linkedList.add(newElement);
             arrayList.add(newElement);
         }
-        double startTime, lAddTime = 0, aAddTime = 0, lInsertTime = 0, aInsertTime = 0,
-                lRemoveTime = 0, aRemoveTime = 0;
+        long startTime;
+        long[] lAddTime = new long[times];
+        long[] aAddTime = new long[times];
+        long[] lInsertTime = new long[times];
+        long[] aInsertTime = new long[times];
+        long[] lRemoveTime = new long[times];
+        long[] aRemoveTime = new long[times];
         for (int i = 0; i < times; i++) {
             //-----Add-----
             Integer newElement = (int) Math.round((Math.random() * 100));
             startTime = System.nanoTime();
             linkedList.add(newElement);
-            lAddTime = lAddTime + System.nanoTime() - startTime;
+            lAddTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             arrayList.add(newElement);
-            aAddTime = aAddTime + System.nanoTime() - startTime;
+            aAddTime[i] = System.nanoTime() - startTime;
 
             //-----Insert-----
             newElement = (int) Math.round((Math.random() * 100));
             startTime = System.nanoTime();
             linkedList.add(size / 2, newElement);
-            lInsertTime = lInsertTime + System.nanoTime() - startTime;
+            lInsertTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             arrayList.add(size / 2, newElement);
-            aInsertTime = aInsertTime + System.nanoTime() - startTime;
+            aInsertTime[i] = System.nanoTime() - startTime;
 
             //-----Remove-----
             startTime = System.nanoTime();
             linkedList.remove(size / 2);
-            lRemoveTime = lRemoveTime + System.nanoTime() - startTime;
+            lRemoveTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             arrayList.remove(size / 2);
-            aRemoveTime = aRemoveTime + System.nanoTime() - startTime;
+            aRemoveTime[i] = System.nanoTime() - startTime;
         }
-        lAddTime /= times;
-        aAddTime /= times;
-        lInsertTime /= times;
-        aInsertTime /= times;
-        lRemoveTime /= times;
-        aRemoveTime /= times;
-        return "\nLinkedList:\nAdd: " + lAddTime + "\nInsert: " + lInsertTime + "\nRemove: " + lRemoveTime +
-                "\n\nArrayList:\nAdd "+ aAddTime + "\nInsert: " + aInsertTime + "\nRemove: " + aRemoveTime;
+
+        return "\nLinkedList:\nAdd: " + arithmeticMean(lAddTime) + "\nInsert: " + arithmeticMean(lInsertTime) + "\nRemove: " + arithmeticMean(lRemoveTime) +
+                "\n\nArrayList:\nAdd: "+ arithmeticMean(aAddTime) + "\nInsert: " + arithmeticMean(aInsertTime) + "\nRemove: " + arithmeticMean(lRemoveTime);
     }
 
     public String testSet() {
@@ -124,44 +132,45 @@ public class TestTime {
             treeSet.add(newElement);
             if (i == size / 2) toRemove = newElement;
         }
-        double startTime, hAddTime = 0, lAddTime = 0, tAddTime = 0, hRemoveTime = 0, lRemoveTime = 0, tRemoveTime = 0;
+        long startTime;
+        long[] hAddTime = new long[times];
+        long[] lAddTime = new long[times];
+        long[] tAddTime = new long[times];
+        long[] hRemoveTime = new long[times];
+        long[] lRemoveTime = new long[times];
+        long[] tRemoveTime = new long[times];
         for (int i = 0; i < times; i++) {
             //-----Add-----
             Integer newElement = (int) Math.round((Math.random() * 100));
             startTime = System.nanoTime();
             hashSet.add(newElement);
-            hAddTime = hAddTime + System.nanoTime() - startTime;
+            hAddTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             linkedHashSet.add(newElement);
-            lAddTime = lAddTime + System.nanoTime() - startTime;
+            lAddTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             treeSet.add(newElement);
-            tAddTime = tAddTime + System.nanoTime() - startTime;
+            tAddTime[i] = System.nanoTime() - startTime;
 
             //-----Remove-----
             startTime = System.nanoTime();
             hashSet.remove(toRemove);
-            hRemoveTime = hRemoveTime + System.nanoTime() - startTime;
+            hRemoveTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             linkedHashSet.remove(toRemove);
-            lRemoveTime = lRemoveTime + System.nanoTime() - startTime;
+            lRemoveTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             treeSet.remove(toRemove);
-            tRemoveTime = tRemoveTime + System.nanoTime() - startTime;
+            tRemoveTime[i] = System.nanoTime() - startTime;
         }
-        hAddTime /= times;
-        lAddTime /= times;
-        tAddTime /= times;
-        hRemoveTime /= times;
-        lRemoveTime /= times;
-        tRemoveTime /= times;
-        return "\nHashSet:\nAdd: " + hAddTime + "\nRemove: " + hRemoveTime +
-                "\n\nLinkedHashSet:\nAdd " + lAddTime + "\nRemove: " + lRemoveTime +
-                "\n\nTreeSet:\nAdd " + tAddTime + "\nRemove: " + tRemoveTime;
+
+        return "\nHashSet:\nAdd: " + arithmeticMean(hAddTime) + "\nRemove: " + arithmeticMean(hRemoveTime) +
+                "\n\nLinkedHashSet:\nAdd: " + arithmeticMean(lAddTime) + "\nRemove: " + arithmeticMean(lRemoveTime) +
+                "\n\nTreeSet:\nAdd: " + arithmeticMean(tAddTime) + "\nRemove: " + arithmeticMean(tRemoveTime);
     }
 
     public String testMap() {
@@ -176,43 +185,44 @@ public class TestTime {
             treeMap.put(i, newElement);
             if (i == size / 2) toRemove = newElement;
         }
-        double startTime, hAddTime = 0, lAddTime = 0, tAddTime = 0, hRemoveTime = 0, lRemoveTime = 0, tRemoveTime = 0;
+        long startTime;
+        long[] hAddTime = new long[times];
+        long[] lAddTime = new long[times];
+        long[] tAddTime = new long[times];
+        long[] hRemoveTime = new long[times];
+        long[] lRemoveTime = new long[times];
+        long[] tRemoveTime = new long[times];
         for (int i = 0; i < times; i++) {
             //-----Add-----
             Integer newElement = (int) Math.round((Math.random() * 100));
             startTime = System.nanoTime();
             hashMap.put(size + i, newElement);
-            hAddTime = hAddTime + System.nanoTime() - startTime;
+            hAddTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             linkedHashMap.put(size + i, newElement);
-            lAddTime = lAddTime + System.nanoTime() - startTime;
+            lAddTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             treeMap.put(size + i, newElement);
-            tAddTime = tAddTime + System.nanoTime() - startTime;
+            tAddTime[i] = System.nanoTime() - startTime;
 
             //-----Remove-----
             startTime = System.nanoTime();
             hashMap.remove(size/2 + i);
-            hRemoveTime = hRemoveTime + System.nanoTime() - startTime;
+            hRemoveTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             linkedHashMap.remove(size/2 + i);
-            lRemoveTime = lRemoveTime + System.nanoTime() - startTime;
+            lRemoveTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
             treeMap.remove(size/2 + i);
-            tRemoveTime = tRemoveTime + System.nanoTime() - startTime;
+            tRemoveTime[i] = System.nanoTime() - startTime;
         }
-        hAddTime /= times;
-        lAddTime /= times;
-        tAddTime /= times;
-        hRemoveTime /= times;
-        lRemoveTime /= times;
-        tRemoveTime /= times;
-        return "\nHashMap:\nAdd: " + hAddTime + "\nRemove: " + hRemoveTime +
-                "\n\nLinkedHashMap:\nAdd " + lAddTime + "\nRemove: " + lRemoveTime +
-                "\n\nTreeMap:\nAdd " + tAddTime + "\nRemove: " + tRemoveTime;
+
+        return "\nHashMap:\nAdd: " + arithmeticMean(hAddTime) + "\nRemove: " + arithmeticMean(hRemoveTime) +
+                "\n\nLinkedHashMap:\nAdd: " + arithmeticMean(lAddTime) + "\nRemove: " + arithmeticMean(lRemoveTime) +
+                "\n\nTreeMap:\nAdd: " + arithmeticMean(tAddTime) + "\nRemove: " + arithmeticMean(tRemoveTime);
     }
 }
