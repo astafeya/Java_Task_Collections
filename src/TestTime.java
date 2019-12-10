@@ -124,13 +124,11 @@ public class TestTime {
         HashSet<Integer> hashSet = new HashSet<>();
         LinkedHashSet<Integer> linkedHashSet = new LinkedHashSet<>();
         TreeSet<Integer> treeSet = new TreeSet<>();
-        Integer toRemove = 0;
         for (int i = 0; i < size; i++) {
-            Integer newElement = (int) Math.round((Math.random() * 100));
+            Integer newElement = i;
             hashSet.add(newElement);
             linkedHashSet.add(newElement);
             treeSet.add(newElement);
-            if (i == size / 2) toRemove = newElement;
         }
         long startTime;
         long[] hAddTime = new long[times];
@@ -141,7 +139,7 @@ public class TestTime {
         long[] tRemoveTime = new long[times];
         for (int i = 0; i < times; i++) {
             //-----Add-----
-            Integer newElement = (int) Math.round((Math.random() * 100));
+            Integer newElement = size + i;
             startTime = System.nanoTime();
             hashSet.add(newElement);
             hAddTime[i] = System.nanoTime() - startTime;
@@ -156,15 +154,15 @@ public class TestTime {
 
             //-----Remove-----
             startTime = System.nanoTime();
-            hashSet.remove(toRemove);
+            hashSet.remove(size/2);
             hRemoveTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
-            linkedHashSet.remove(toRemove);
+            linkedHashSet.remove(size/2);
             lRemoveTime[i] = System.nanoTime() - startTime;
 
             startTime = System.nanoTime();
-            treeSet.remove(toRemove);
+            treeSet.remove(size/2);
             tRemoveTime[i] = System.nanoTime() - startTime;
         }
 
